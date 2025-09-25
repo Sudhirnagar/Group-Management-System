@@ -7,7 +7,7 @@ create table enrollement(
 );
 
 SELECT * FROM Enrollement join Course on Enrollement.Course_ID = Course.Course_ID
-where RollNo = '202251127' and Year = 2023;
+where RollNo = '202251136' and Year = 2023;
 
 create table project(
     Project_ID varchar(20) PRIMARY KEY AUTO_INCREMENT,

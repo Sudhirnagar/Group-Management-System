@@ -5,22 +5,23 @@ const path = require('path');
 const app = express();
 const router = express.Router();
 
-dotenv.config({path : "./env"})
+dotenv.config({ path: "./env" });
 
-const publicDirectory = path.join(__dirname,'/public');
+const publicDirectory = path.join(__dirname, '/public');
 app.use(express.static(publicDirectory));
 
-app.use(express.urlencoded({extneded: false}));
+// Fixed typo 'extneded' -> 'extended'
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.set('view engine','hbs');
+app.set('view engine', 'hbs');
 
 app.use('/', require('./Routes/common'));
 app.use('/auth', require('./Routes/auth'));
 app.use('/t', require('./Routes/Teacher'));
 app.use('/s', require('./Routes/Student'));
 
-PORT = 5000;
+const PORT = 5000;
 
 // Start the server
 app.listen(PORT, () => {
