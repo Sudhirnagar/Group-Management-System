@@ -33,9 +33,9 @@
             <h1>Project</h1>
         </div>
         <div class="nav-right">
-            <a href="/Teacher/ViewProject?Project_ID={{Project_ID}}" class="btn">View Project</a>
-            <a href="/Teacher/ViewNonTeamStudents?Project_ID={{Project_ID}}" class="btn">View non-Teams</a>
-            <a href="/Teacher/Project/DeleteProject?Project_ID={{Project_ID}}" class="btn">Delete Project</a>
+            <a href="/t/ViewProject?Project_ID={{Project_ID}}" class="btn">View Project</a>
+            <a href="/t/ViewNonTeamStudents?Project_ID={{Project_ID}}" class="btn">View non-Teams</a>
+            <a href="/t/Project/DeleteProject?Project_ID={{Project_ID}}" class="btn">Delete Project</a>
         </div>
     </nav>
 
@@ -44,7 +44,7 @@
         <div class="card">
             <div class="card-content">
                 <h2>{{this.Team_Name}}</h2>
-                <a href="/Teacher/ViewTeamMembers?Team_ID={{this.id}}" target="_blank" class="btn">View Team</a>
+                <a href="/t/ViewTeamMembers?Team_ID={{this.id}}" target="_blank" class="btn">View Team</a>
             </div>
         </div>
     {{/each}}

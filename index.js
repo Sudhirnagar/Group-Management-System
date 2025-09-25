@@ -19,7 +19,8 @@ app.set('view engine', 'hbs');
 app.use('/', require('./Routes/common'));
 app.use('/auth', require('./Routes/auth'));
 app.use('/t', require('./Routes/Teacher'));
-app.use('/s', require('./Routes/Student'));
+app.use('/Student', require('./Routes/Student'));
+
 
 const PORT = 5000;
 

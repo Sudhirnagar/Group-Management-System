@@ -1,50 +1,38 @@
 const express = require('express');
+const router = express.Router();
+const cookieParser = require('cookie-parser');
 
 const { fetchProfile, loadHomePage } = require('../Controllers/Teacher/homeC');
 const { authenticateToken, validateUserTypeT } = require('../Middlewares/jwtTokenVerifer');
-const cookieParser = require('cookie-parser');
 const { createProject, getProjectDetails } = require('../Controllers/Teacher/ProjectC');
-const { getEnrolledStudentList, fetchGroupDetails, getGroups, fetchNonGroupStudents, fetchVacantGroups } = require('../Controllers/commonC');
-const router = express.Router();
+const { getEnrolledStudentList, getGroups, fetchGroupDetails, fetchNonGroupStudents, fetchVacantGroups } = require('../Controllers/commonC');
 
 router.use(cookieParser());
-
 router.use(authenticateToken);
-
 router.use(validateUserTypeT);
 
-router.route('/profile').get(fetchProfile);
+// Profile & Home
+router.get('/profile', fetchProfile); 
+router.get('/home', loadHomePage);
 
-router.route('/home').get(loadHomePage);
+// Create Course Page
+router.get('/CreateCourse', (req, res) => {
+    res.render('Teacher/CreateCourse'); // HBS view
+});
 
-router.route('/project').put(createProject);
+// Project Routes
+router.put('/project', createProject);
+router.get('/project/:Project_ID', getProjectDetails);
+router.get('/project/:Project_ID/viewParticpants', getEnrolledStudentList);
+router.get('/project/:Project_ID/viewGroups', getGroups);
+router.get('/project/:Project_ID/group/:GID', fetchGroupDetails);
+router.get('/project/:Project_ID/viewNonGroupStudents', fetchNonGroupStudents);
+router.get('/project/:Project_ID/viewVacantGroups', fetchVacantGroups);
 
-router.route('/project/:Project_ID').get(getProjectDetails);
-
-router.route('/project/:Project_ID/viewParticpants').get(getEnrolledStudentList);
-
-router.route('/project/:Project_ID/viewGroups').get(getGroups);
-
-router.route('/project/:Project_ID/group/:GID').get(fetchGroupDetails);
-
-router.route('/project/:Project_ID/viewNonGroupStudents').get(fetchNonGroupStudents);
-
-router.route('/project/:Project_ID/viewVacantGroups').get(fetchVacantGroups);
-
-router.get('/Project/DeleteProject', (req, res) => {
-    const Project_ID = req.query.Project_ID;
-
-    getCourseID(Project_ID).then(Course_ID => {
-        deleteProject(Project_ID).then(output => {
-            if (output == 1) {
-                res.redirect('/Teacher/Course?id=' + Course_ID);
-            }
-            else {
-                console.log(output);
-            }
-        });
-    });
-
+// Logout
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.redirect('/auth/login');
 });
 
 module.exports = router;

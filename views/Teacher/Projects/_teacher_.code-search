@@ -1,0 +1,36 @@
+# Query: /teacher/
+# ContextLines: 1
+
+9 results - 4 files
+
+Routes\t                                                                                                                                                                                                                                                                                        .js:
+  4  
+  5: const { fetchProfile, loadHomePage } = require('../Controllers/t/homeC');
+  6  const { authenticateToken, validateUserTypeT } = require('../Middlewares/jwtTokenVerifer');
+  7: const { createProject, getProjectDetails } = require('../Controllers/t/ProjectC');
+  8  const { getEnrolledStudentList, getGroups, fetchGroupDetails, fetchNonGroupStudents, fetchVacantGroups } = require('../Controllers/commonC');
+
+views\t                                                                                                                                                                                                                                                                                     \Course.hbs:
+   6      <title>Home Page</title>
+   7:     <link rel="stylesheet" href="/t/home.css">
+   8  </head>
+
+  37          <div class="nav-right">
+  38:             <a href="/t/CreateProject?id={{Course.Course_ID}}"class="btn">Assign Project</a>
+  39:             <a href="/t/ViewCourseParticipants?Course_ID={{Course.Course_ID}}" class="btn">View Participants</a>
+  40:             <a href = "/t/DeleteCourse?Course_ID={{Course.Course_ID}}" class="btn">Delete Course</a>
+  41          </div>
+
+  53                  <h2>{{this.Last_Date}}</h2>
+  54:                 <a href="/t/ViewProject?Project_ID={{this.Project_ID}}" class="btn">View</a>
+  55              </div>
+
+views\t                                                                                                                                                                                                                                                                                     \CreateCourse.hbs:
+  32          <h2>Create Course</h2>
+  33:         <form action="/t/CreateCourse" method="POST">
+  34              <div class="form-group">
+
+views\t                                                                                                                                                                                                                                                                                     \CreateProject.hbs:
+  32          <h2>Create Course</h2>
+  33:         <form action="/t/CreateProject" method="POST">
+  34              <div class="form-group"> 

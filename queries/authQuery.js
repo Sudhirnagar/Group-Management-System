@@ -2,31 +2,42 @@
 const dbQuery = require("../db");
 
 async function authorizeUser(emailID, password) {
-    const result1 = await dbQuery(
-        `SELECT * FROM LogIn WHERE EmailAddress = ?`,
-        [emailID]
+    // check if user exists
+    const result = await dbQuery(
+        `SELECT * FROM LogIn WHERE EmailAddress = ? AND password = ?`,
+        [emailID, password]
     );
 
-    if (result1.length === 1) {
-        const result2 = await dbQuery(
-            `SELECT * FROM LogIn WHERE EmailAddress = ? AND password = ?`,
-            [emailID, password]
-        );
-        if (result2.length === 1) {
-            result2[0].status = 200;
-            return result2[0];
+    if (result.length === 1) {
+        const user = result[0];
+        user.status = 200;
+
+        // determine role
+        const isStudent = await dbQuery(`SELECT * FROM student WHERE EmailAddress = ?`, [emailID]);
+        if (isStudent.length === 1) {
+            user.role = 's';
         } else {
-            return { status: 401 }; // invalid password
+            const isTeacher = await dbQuery(`SELECT * FROM teacher WHERE EmailAddress = ?`, [emailID]);
+            if (isTeacher.length === 1) {
+                user.role = 't';
+            } else {
+                return { status: 404 }; // no role found
+            }
         }
+
+        return user;
     } else {
-        return { status: 404 }; // user not found
+        // invalid email or password
+        const checkEmail = await dbQuery(`SELECT * FROM LogIn WHERE EmailAddress = ?`, [emailID]);
+        if (checkEmail.length === 0) return { status: 404 }; // user not found
+        return { status: 401 }; // wrong password
     }
 }
 
 async function getUserID(emailID, userType) {
     if (userType === 's') {
         const result = await dbQuery(
-            `SELECT userID FROM student JOIN LogIn ON student.EmailAddress = LogIn.EmailAddress WHERE student.EmailAddress = ?`,
+            `SELECT RollNo AS userID FROM student WHERE EmailAddress = ?`,
             [emailID]
         );
         if (result.length === 1) {
@@ -37,7 +48,7 @@ async function getUserID(emailID, userType) {
         }
     } else if (userType === 't') {
         const result = await dbQuery(
-            `SELECT userID FROM teacher JOIN LogIn ON teacher.EmailAddress = LogIn.EmailAddress WHERE teacher.EmailAddress = ?`,
+            `SELECT Teacher_ID AS userID FROM teacher WHERE EmailAddress = ?`,
             [emailID]
         );
         if (result.length === 1) {

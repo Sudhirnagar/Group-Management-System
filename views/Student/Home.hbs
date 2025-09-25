@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Student Home Page</title>
     <link rel="stylesheet" href="/Student/home.css">
 </head>
 <body>
@@ -18,35 +18,39 @@
     <div class="bubble" style="top: 90%; left: 10%;"></div>
     <div class="bubble" style="top: 60%; left: 50%;"></div>
     
-
     <script>
-        // JavaScript to add the 'move' class to the bubble divs after the page loads
+        // animate bubbles after load
         document.addEventListener('DOMContentLoaded', function() {
             const bubbles = document.querySelectorAll('.bubble');
             bubbles.forEach((bubble, index) => {
                 setTimeout(() => {
                     bubble.classList.add('move');
-                }, index * 500); // Delay each bubble's animation start by 500 milliseconds
+                }, index * 500);
             });
         });
     </script>
+
     <nav>
         <div class="logo">
             <h1>Group Management System</h1>
         </div>
         <div class="nav-right">
-            <a href="/LogOut" class="btn">Log Out</a>
+            <!-- fixed logout link -->
+            <a href="/Student/logout" class="btn">Log Out</a>
+            <!-- fixed join course -->
             <a href="/Student/JoinCourse" class="btn">Join Course</a>
         </div>
     </nav>
-        <div class="card-container">
+
+    <div class="card-container">
         {{#each Courses}}
         <div class="card">
             <div class="card-content">
                 <h2>{{this.Course_Code}}</h2>
                 <h2>{{this.Course_Name}}</h2>
                 <h2>{{this.Year}}</h2>
-                <a href="/Student/Course?id={{this.Course_ID}}" class="btn">View</a>
+                <!-- fixed project view link -->
+                <a href="/Student/project/{{this.Course_ID}}" class="btn">View</a>
             </div>
         </div>
         {{/each}}

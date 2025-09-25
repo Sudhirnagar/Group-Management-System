@@ -5,7 +5,7 @@ create table student(
     LName varchar(20),
     Barch int not null,
     gender ENUM('M','F') not null,
-    Branch varchar(10) not null
+    Branch varchar(10) not null,
 
     foreign key(EmailAddress) references LogIn(EmailAddress)
 );
